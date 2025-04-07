@@ -14,6 +14,18 @@ The goal is to not just use postgres as the database, but as the data ingestion 
 ## 🎨 Features
 
 ## Getting started
+### Dependencies
+This project uses [Flyway](https://www.red-gate.com/products/flyway) to handle database migrations, functions etc.
 
-### Setup
+### Run via Docker
+To run the project simply use:
+```bash
+docker compose up
+```
+
+### Pre-requisites if running outside of Docker
+Make sure that your postgres instance is up to date (we're running version 17), and that you have the following
+dependencies installed on the host machine:
+* [pgTap](https://pgtap.org/): Used for unit testing
+
 
