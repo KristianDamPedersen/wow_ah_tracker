@@ -19,4 +19,4 @@ jobs:
           version: latest
 
       - name: Build docker image
-        run: docker-compose build --no-cache
+        run: docker compose build --no-cache
