@@ -33,7 +33,7 @@ jobs:
         run: pwd
 
       - name: Migrate
-        run: docker run --rm -v "/wow_ah_tracker/db:/flyway/sql" -v "/wow_ah_tracker/db:/flyway/conf" redgate/flyway migrate
+        run: docker run --rm --network="host" -v "/wow_ah_tracker/db:/flyway/sql" -v "/wow_ah_tracker/db:/flyway/conf" redgate/flyway migrate
 
       - name: Run the unit tests
         run: ./db/run_tests.sh
