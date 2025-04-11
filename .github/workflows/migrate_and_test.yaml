@@ -17,6 +17,18 @@ jobs:
         uses: docker/setup-compose-action@v1
         with:
           version: latest
+      
       - uses: actions/checkout@v4
+      
       - name: Build docker image
         run: docker compose build --no-cache
+      
+      - name: Run the project
+        run: docker compose up -d
+
+      - name: Wait
+        run: sleep 10
+
+      - name: Stop contaners
+        if: always()
+        run: docker compose down -v
