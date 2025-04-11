@@ -1,0 +1,43 @@
+name: migrate and test
+on:
+  pull_request:
+    branches: [ "main" ]
+
+  push:
+    branches: [ "*" ] # TODO: Remove this before merging
+
+permissions:
+  contents: read
+
+jobs:
+  build_migrate_test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Set up Docker Compose
+        uses: docker/setup-compose-action@v1
+        with:
+          version: latest
+
+      - uses: actions/checkout@v4
+      
+      - name: Build docker image
+        run: docker compose build --no-cache
+      
+      - name: Run the project
+        run: docker compose up -d
+      
+      - name: Wait 
+        run: sleep 10
+
+      - name: List absdir
+        run: pwd
+
+      - name: Migrate
+        run: docker run --rm --network="host" -v "/wow_ah_tracker/db:/flyway/sql" -v "/wow_ah_tracker/db:/flyway/conf" redgate/flyway migrate
+
+      - name: Run the unit tests
+        run: ./db/run_tests.sh
+
+      - name: Stop contaners
+        if: always()
+        run: docker compose down -v
