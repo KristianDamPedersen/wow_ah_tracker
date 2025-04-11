@@ -1,0 +1,21 @@
+name: migrate and test
+on:
+  pull_request:
+    branches: [ "main" ]
+
+  push:
+    branches: [ "*" ] # TODO: Remove this before merging
+
+permissions:
+  contents: read
+
+jobs:
+  build_migrate_test:
+    steps:
+      - name: Set up Docker Compose
+        uses: docker/setup-compose-action@v1
+        with:
+          version: latest
+
+      - name: Build docker image
+        run: docker-compose build --no-cache
