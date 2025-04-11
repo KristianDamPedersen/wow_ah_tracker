@@ -29,8 +29,11 @@ jobs:
       - name: Wait 
         run: sleep 10
 
+      - name: List absdir
+        run: pwd
+
       - name: Migrate
-        run: docker run --rm -v "./db:/flyway/sql" -v "./db:/flyway/conf" redgate/flyway migrate
+        run: docker run --rm -v "/wow_ah_tracker/db:/flyway/sql" -v "/wow_ah_tracker/db:/flyway/conf" redgate/flyway migrate
 
       - name: Run the unit tests
         run: ./db/run_tests.sh
