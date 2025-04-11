@@ -17,6 +17,6 @@ jobs:
         uses: docker/setup-compose-action@v1
         with:
           version: latest
-
+      - uses: actions/checkout@v4
       - name: Build docker image
         run: docker compose build --no-cache
