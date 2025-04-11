@@ -17,7 +17,7 @@ jobs:
         uses: docker/setup-compose-action@v1
         with:
           version: latest
-      
+
       - uses: actions/checkout@v4
       
       - name: Build docker image
@@ -28,6 +28,9 @@ jobs:
       
       - name: Wait 
         run: sleep 10
+
+      - name: Migrate
+        run: docker run --rm -v "./db:/flyway/sql" -v "./db:/flyway/conf" redgate/flyway migrate
 
       - name: Run the unit tests
         run: ./db/run_tests.sh
