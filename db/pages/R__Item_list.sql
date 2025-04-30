@@ -1,7 +1,7 @@
 create or replace function item_list(items) returns text as $$
   select format($html$
     <div class = "container">
-      <p>Name: %2$s</p>
+      <p>Name: %1$s</p>
     </div>
     $html$,
     api.sanitize_html($1.name)
