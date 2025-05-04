@@ -1,0 +1,1 @@
+create domain "text/html" as text;
