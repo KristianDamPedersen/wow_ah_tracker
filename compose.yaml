@@ -10,7 +10,15 @@ services:
       - wow-db:/var/lib/postgresql/data 
     ports:
       - 5432:5432
-
+    command:
+      - "-c"
+      - "shared_preload_libraries=supabase_vault"
+      - "-c"
+      - "vault.getkey_script=/scripts/get_key.sh"
+    secrets:
+      - vault_encryption_key
+      - battlenet_client
+      - battlenet_secret
   postgrest:
     image: postgrest/postgrest
     ports:
@@ -27,3 +35,10 @@ volumes:
   wow-db:
 
 
+secrets:
+  vault_encryption_key:
+    file: vault_encryption.secret
+  battlenet_client:
+    file: battlenetclient.secret
+  battlenet_secret:
+    file: battlenetsecret.secret
