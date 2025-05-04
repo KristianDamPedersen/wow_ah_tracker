@@ -11,6 +11,18 @@ services:
     ports:
       - 5432:5432
 
+  postgrest:
+    image: postgrest/postgrest
+    ports:
+      - "3000:3000"
+    environment:
+      PGRST_DB_URI: postgres://authenticator:mysecretpassword@db:5432/wow-db
+      PGRST_OPENAPI_SERVER_PROXY_URI: http://127.0.0.1:3000
+      PGRST_DB_ANON_ROLE: web_anon
+      PGRST_DB_SCHEMAS: api
+    depends_on:
+      - db
+
 volumes:
   wow-db:
 

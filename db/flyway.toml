@@ -1,8 +1,9 @@
 [flyway]
-locations = ["filesystem:migrations", "filesystem:functions"]
+locations = ["filesystem:migrations", "filesystem:functions", "filesystem:roles", "filesystem:pages"]
 
 [environments.default]
-locations = ["filesystem:migrations", "filesystem:functions"]
+locations = ["filesystem:migrations", "filesystem:functions", "filesystem:roles", "filesystem:pages"]
+schemas = ["public", "api"]
 url = "jdbc:postgresql://localhost:5432/wow-db"
 user = "postgres"
 password = "postgres"
