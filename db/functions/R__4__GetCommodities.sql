@@ -1,10 +1,10 @@
--- get commodities
-create or replace function get_commodities() returns table(id json,itemid json,quantity json,unitprice json,timeleft json) as $$
-select json_array_elements(content::json->'auctions')->'id' as auctionid,
-json_array_elements(content::json->'auctions')->'item'->'id' as itemid,
-json_array_elements(content::json->'auctions')->'quantity' as quantity,
-json_array_elements(content::json->'auctions')->'unit_price' as unitprice,
-json_array_elements(content::json->'auctions')->'time_left' as timeleft
+drop function if exists get_commodities;
+create or replace function get_commodities() returns table(id BIGINT,itemid BIGINT,quantity BIGINT,unitprice BIGINT,timeleft text) as $$
+select (json_array_elements(content::json->'auctions')->'id')::text::BIGINT as auctionid,
+(json_array_elements(content::json->'auctions')->'item'->'id')::text::BIGINT as itemid,
+(json_array_elements(content::json->'auctions')->'quantity')::text::BIGINT as quantity,
+(json_array_elements(content::json->'auctions')->'unit_price')::text::BIGINT as unitprice,
+(json_array_elements(content::json->'auctions')->'time_left')::text as timeleft
 from http((
 'get',
 'https://eu.api.blizzard.com//data/wow/auctions/commodities?namespace=dynamic-eu',
