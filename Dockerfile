@@ -23,12 +23,11 @@ WORKDIR /http-psql/pgsql-http-1.6.3
 RUN make
 RUN make install
 
-
 #install supabase vault
 WORKDIR /supabaseVault
 RUN apt install -y libsodium-dev libsodium23
 RUN curl -L https://github.com/supabase/vault/archive/refs/tags/v0.3.1.zip -o supabasevault.zip
-RUN unzip ./supabasevault.zip 
+RUN unzip ./supabasevault.zip
 RUN ls .
 WORKDIR ./vault-0.3.1
 RUN make
@@ -36,3 +35,16 @@ RUN make install
 RUN mkdir /scripts
 RUN echo '#!/bin/sh\ncat /run/secrets/vault_encryption_key' > /scripts/get_key.sh
 RUN chmod +x /scripts/get_key.sh
+
+# Install TimescaleDB
+RUN apt install -y gnupg postgresql-common apt-transport-https lsb-release wget
+RUN /usr/share/postgresql-common/pgdg/apt.postgresql.org.sh -y
+RUN apt install postgresql-server-dev-17
+RUN echo "deb https://packagecloud.io/timescale/timescaledb/debian/ $(lsb_release -c -s) main" | tee /etc/apt/sources.list.d/timescaledb.list
+RUN wget --quiet -O - https://packagecloud.io/timescale/timescaledb/gpgkey | gpg --dearmor -o /etc/apt/trusted.gpg.d/timescaledb.gpg
+RUN apt update -y
+RUN apt install -y timescaledb-2-postgresql-17 postgresql-client-17
+
+# Add entrypoint init script
+COPY init-timescaledb.sh /docker-entry-initdb.d/init-timescaledb.sh
+RUN chmod +x /docker-entry-initdb.d/init-timescaledb.sh
