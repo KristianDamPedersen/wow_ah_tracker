@@ -1,0 +1,1 @@
+CREATE EXTENSION supabase_vault CASCADE;
