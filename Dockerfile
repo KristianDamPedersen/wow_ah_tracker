@@ -27,7 +27,7 @@ RUN make install
 WORKDIR /supabaseVault
 RUN apt install -y libsodium-dev libsodium23
 RUN curl -L https://github.com/supabase/vault/archive/refs/tags/v0.3.1.zip -o supabasevault.zip
-RUN unzip ./supabasevault.zip 
+RUN unzip ./supabasevault.zip
 RUN ls .
 WORKDIR ./vault-0.3.1
 RUN make
