@@ -6,12 +6,15 @@ services:
       POSTGRES_PASSWORD: postgres
       POSTGRES_USER: postgres
       POSTGRES_DB: wow-db
-      POSTGRES_INITDB_ARGS: "-c shared_preload_libraries=timescaledb"
+      POSTGRES_INITDB_ARGS: "-c shared_preload_libraries=timescaledb,supabase_vault -c vault.getkey_script=/scripts/get_key.sh"
     volumes:
       - wow-db:/var/lib/postgresql/data
     ports:
       - 5432:5432
-
+    secrets:
+      - vault_encryption_key
+      - battlenet_client
+      - battlenet_secret
   postgrest:
     image: postgrest/postgrest
     ports:
@@ -28,3 +31,10 @@ volumes:
   wow-db:
 
 
+secrets:
+  vault_encryption_key:
+    file: vault_encryption.secret
+  battlenet_client:
+    file: battlenetclient.secret
+  battlenet_secret:
+    file: battlenetsecret.secret

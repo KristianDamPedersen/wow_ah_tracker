@@ -23,6 +23,19 @@ WORKDIR /http-psql/pgsql-http-1.6.3
 RUN make
 RUN make install
 
+#install supabase vault
+WORKDIR /supabaseVault
+RUN apt install -y libsodium-dev libsodium23
+RUN curl -L https://github.com/supabase/vault/archive/refs/tags/v0.3.1.zip -o supabasevault.zip
+RUN unzip ./supabasevault.zip
+RUN ls .
+WORKDIR ./vault-0.3.1
+RUN make
+RUN make install
+RUN mkdir /scripts
+RUN echo '#!/bin/sh\ncat /run/secrets/vault_encryption_key' > /scripts/get_key.sh
+RUN chmod +x /scripts/get_key.sh
+
 # Install TimescaleDB
 RUN apt install -y gnupg postgresql-common apt-transport-https lsb-release wget
 RUN /usr/share/postgresql-common/pgdg/apt.postgresql.org.sh -y
